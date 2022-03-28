@@ -302,6 +302,8 @@ function validateOptionsForMultiChunkOutput(
 				'"output.sourcemapFile" is only supported for single-file builds'
 			)
 		);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	if (!outputOptions.amd.autoId && outputOptions.amd.id)
 		onWarn(
 			errInvalidOption(

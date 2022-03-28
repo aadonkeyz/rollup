@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type {
 	InternalModuleFormat,
 	InteropType,
@@ -35,6 +36,7 @@ export function normalizeOutputOptions(
 	const generatedCode = getGeneratedCode(config, preferConst);
 
 	const outputOptions: NormalizedOutputOptions & OutputOptions = {
+		// @ts-ignore
 		amd: getAmd(config),
 		assetFileNames: config.assetFileNames ?? 'assets/[name]-[hash][extname]',
 		banner: getAddon(config, 'banner'),

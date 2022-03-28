@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type DecodedSourceMap, SourceMap } from 'magic-string';
 import type Module from '../Module';
 import type {
@@ -152,15 +153,17 @@ class Link {
 function getLinkMap(warn: WarningHandler) {
 	return function linkMap(source: Source | Link, map: DecodedSourceMapOrMissing): Link {
 		if (map.mappings) {
-			return new Link(map, [source]);
+			return new Link(map as any, [source]);
 		}
 
 		warn({
 			code: 'SOURCEMAP_BROKEN',
 			message:
+				// @ts-ignore
 				`Sourcemap is likely to be incorrect: a plugin (${map.plugin}) was used to transform ` +
 				"files, but didn't generate a sourcemap for the transformation. Consult the plugin " +
 				'documentation for help',
+			// @ts-ignore
 			plugin: map.plugin,
 			url: `https://rollupjs.org/guide/en/#warning-sourcemap-is-likely-to-be-incorrect`
 		});
@@ -223,6 +226,7 @@ export function collapseSourcemaps(
 
 	const link = new Link(map, moduleSources);
 	const source = bundleSourcemapChain.reduce(linkMap, link);
+	// @ts-ignore
 	let { sources, sourcesContent, names, mappings } = source.traceMappings();
 
 	if (file) {

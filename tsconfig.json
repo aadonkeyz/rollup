@@ -1,9 +1,10 @@
 {
 	"compilerOptions": {
+		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
-		"module": "ESNext",
+		"module": "commonjs",
 		"moduleResolution": "Node",
 		"noEmitOnError": true,
 		"noUnusedLocals": true,
@@ -11,10 +12,10 @@
 		"pretty": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
-		"strict": true,
+		"strict": false,
 		"target": "ES2018",
 		"useDefineForClassFields": false
 	},
-	"include": ["typings/**/*.d.ts", "src", "cli", "browser", "rollup.config.ts"],
+	"include": ["typings/**/*.d.ts", "src", "cli", "browser", "rollup.config.ts", "learn"],
 	"exclude": ["dist", "node_modules", "test/typescript"]
 }

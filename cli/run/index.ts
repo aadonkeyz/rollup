@@ -10,7 +10,10 @@ import { getConfigPath } from './getConfigPath';
 import loadAndParseConfigFile from './loadConfigFile';
 import loadConfigFromCommand from './loadConfigFromCommand';
 
-export default async function runRollup(command: Record<string, any>): Promise<void> {
+export default async function runRollup(
+	command: Record<string, any>,
+	fileName: string
+): Promise<void> {
 	let inputSource;
 	if (command._.length > 0) {
 		if (command.input) {
@@ -60,7 +63,7 @@ export default async function runRollup(command: Record<string, any>): Promise<v
 		watch(command);
 	} else {
 		try {
-			const { options, warnings } = await getConfigs(command);
+			const { options, warnings } = await getConfigs(command, fileName);
 			try {
 				for (const inputOptions of options) {
 					await build(inputOptions, warnings, command.silent);
@@ -83,10 +86,11 @@ export default async function runRollup(command: Record<string, any>): Promise<v
 }
 
 async function getConfigs(
-	command: any
+	command: any,
+	fileName: string
 ): Promise<{ options: MergedRollupOptions[]; warnings: BatchWarnings }> {
 	if (command.config) {
-		const configFile = await getConfigPath(command.config);
+		const configFile = fileName || (await getConfigPath(command.config));
 		const { options, warnings } = await loadAndParseConfigFile(configFile, command);
 		return { options, warnings };
 	}

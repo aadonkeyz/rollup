@@ -1,4 +1,3 @@
-import isReference, { type NodeWithFieldDefinition } from 'is-reference';
 import type MagicString from 'magic-string';
 import type { NormalizedTreeshakingOptions } from '../../rollup/types';
 import { BLANK } from '../../utils/blank';
@@ -21,6 +20,53 @@ import {
 } from './shared/Expression';
 import { type ExpressionNode, NodeBase } from './shared/Node';
 import type { PatternNode } from './shared/Pattern';
+
+/**
+ * for local debug
+ */
+function isReference(node, parent) {
+	if (node.type === 'MemberExpression') {
+		return !node.computed && isReference(node.object, node);
+	}
+
+	if (node.type === 'Identifier') {
+		if (!parent) return true;
+
+		switch (parent.type) {
+			// disregard `bar` in `foo.bar`
+			case 'MemberExpression':
+				return parent.computed || node === parent.object;
+
+			// disregard the `foo` in `class {foo(){}}` but keep it in `class {[foo](){}}`
+			case 'MethodDefinition':
+				return parent.computed;
+
+			// disregard the `foo` in `class {foo=bar}` but keep it in `class {[foo]=bar}` and `class {bar=foo}`
+			case 'PropertyDefinition':
+				return parent.computed || node === parent.value;
+
+			// disregard the `bar` in `{ bar: foo }`, but keep it in `{ [bar]: foo }`
+			case 'Property':
+				return parent.computed || node === parent.value;
+
+			// disregard the `bar` in `export { foo as bar }` or
+			// the foo in `import { foo as bar }`
+			case 'ExportSpecifier':
+			case 'ImportSpecifier':
+				return node === parent.local;
+
+			// disregard the `foo` in `foo: while (...) { ... break foo; ... continue foo;}`
+			case 'LabeledStatement':
+			case 'BreakStatement':
+			case 'ContinueStatement':
+				return false;
+			default:
+				return true;
+		}
+	}
+
+	return false;
+}
 
 export type IdentifierWithVariable = Identifier & { variable: Variable };
 
@@ -49,7 +95,7 @@ export default class Identifier extends NodeBase implements PatternNode {
 	}
 
 	bind(): void {
-		if (this.variable === null && isReference(this, this.parent as NodeWithFieldDefinition)) {
+		if (this.variable === null && isReference(this, this.parent as any)) {
 			this.variable = this.scope.findVariable(this.name);
 			this.variable.addReference(this);
 		}

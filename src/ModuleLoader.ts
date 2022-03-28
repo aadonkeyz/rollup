@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as acorn from 'acorn';
 import ExternalModule from './ExternalModule';
 import type Graph from './Graph';
@@ -478,6 +479,7 @@ export class ModuleLoader {
 					resolveIdResult.external || this.options.external(resolveIdResult.id, importer, true);
 				return {
 					...resolveIdResult,
+					// @ts-ignore
 					external:
 						external &&
 						(external === 'relative' ||
@@ -490,6 +492,7 @@ export class ModuleLoader {
 
 			const external = this.options.external(resolveIdResult, importer, true);
 			return {
+				// @ts-ignore
 				external:
 					external &&
 					(isNotAbsoluteExternal(resolveIdResult, source, makeAbsoluteExternalsRelative) ||

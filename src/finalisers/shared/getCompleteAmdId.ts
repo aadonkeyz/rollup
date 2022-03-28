@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { NormalizedOutputOptions } from '../../rollup/types';
 import removeJsExtension from './removeJsExtension';
 
@@ -9,5 +10,6 @@ export default function getCompleteAmdId(
 		return `${options.basePath ? options.basePath + '/' : ''}${removeJsExtension(chunkId)}`;
 	}
 
+	// @ts-ignore
 	return options.id || '';
 }
