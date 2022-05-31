@@ -104,6 +104,7 @@ export class ModuleLoader {
 		implicitEntryModules: Module[];
 		newEntryModules: Module[];
 	}> {
+		// aadonkeyz
 		const firstEntryModuleIndex = this.nextEntryModuleIndex;
 		this.nextEntryModuleIndex += unresolvedEntryModules.length;
 		const firstChunkNamePriority = this.nextChunkNamePriority;
@@ -296,6 +297,7 @@ export class ModuleLoader {
 			module.setSource(cachedModule);
 		} else {
 			module.updateOptions(sourceDescription);
+			// aadonkeyz source context scope
 			module.setSource(
 				await transform(sourceDescription, module, this.pluginDriver, this.options.onwarn)
 			);
@@ -325,6 +327,7 @@ export class ModuleLoader {
 		module: Module,
 		resolveDynamicImportPromises: readonly ResolveDynamicDependencyPromise[]
 	): Promise<void> {
+		// aadonkeyz
 		const dependencies = await Promise.all(
 			resolveDynamicImportPromises.map(resolveDynamicImportPromise =>
 				resolveDynamicImportPromise.then(async ([dynamicImport, resolvedId]) => {
@@ -358,6 +361,7 @@ export class ModuleLoader {
 		isEntry: boolean,
 		isPreload: PreloadType
 	): Promise<Module> {
+		// aadonkeyz
 		const existingModule = this.modulesById.get(id);
 		if (existingModule instanceof Module) {
 			await this.handleExistingModule(existingModule, isEntry, isPreload);
@@ -406,6 +410,7 @@ export class ModuleLoader {
 			return;
 		}
 		this.modulesWithLoadedDependencies.add(module);
+		// aadonkeyz
 		await Promise.all([
 			this.fetchStaticDependencies(module, resolveStaticDependencyPromises),
 			this.fetchDynamicDependencies(module, resolveDynamicDependencyPromises)
@@ -420,6 +425,7 @@ export class ModuleLoader {
 		importer: string,
 		resolvedId: ResolvedId
 	): Promise<Module | ExternalModule> {
+		// aadonkeyz
 		if (resolvedId.external) {
 			const { external, id, moduleSideEffects, meta } = resolvedId;
 			if (!this.modulesById.has(id)) {
@@ -448,6 +454,7 @@ export class ModuleLoader {
 		module: Module,
 		resolveStaticDependencyPromises: readonly ResolveStaticDependencyPromise[]
 	): Promise<void> {
+		// aadonkeyz
 		for (const dependency of await Promise.all(
 			resolveStaticDependencyPromises.map(resolveStaticDependencyPromise =>
 				resolveStaticDependencyPromise.then(([source, resolvedId]) =>
@@ -613,6 +620,7 @@ export class ModuleLoader {
 		importer: string | undefined,
 		implicitlyLoadedBefore: string | null
 	): Promise<Module> {
+		// aadonkeyz
 		const resolveIdResult = await resolveId(
 			unresolvedId,
 			importer,
@@ -623,6 +631,7 @@ export class ModuleLoader {
 			EMPTY_OBJECT,
 			true
 		);
+		// aadonkeyz see resolveIdResult
 		if (resolveIdResult == null) {
 			return error(
 				implicitlyLoadedBefore === null

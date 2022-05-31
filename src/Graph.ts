@@ -94,6 +94,7 @@ export default class Graph {
 	}
 
 	async build(): Promise<void> {
+		// aadonkeyz
 		timeStart('generate module graph', 2);
 		await this.generateModuleGraph();
 		timeEnd('generate module graph', 2);
@@ -164,8 +165,10 @@ export default class Graph {
 	};
 
 	private async generateModuleGraph(): Promise<void> {
+		// aadonkeyz see this.options.input
 		({ entryModules: this.entryModules, implicitEntryModules: this.implicitEntryModules } =
 			await this.moduleLoader.addEntryModules(normalizeEntryModules(this.options.input), true));
+		// aadonkeyz see this.entryModules and this.implicitEntryModules
 		if (this.entryModules.length === 0) {
 			throw new Error('You must supply options.input to rollup');
 		}
@@ -179,6 +182,7 @@ export default class Graph {
 	}
 
 	private includeStatements(): void {
+		// aadonkeyz
 		for (const module of [...this.entryModules, ...this.implicitEntryModules]) {
 			markModuleAndImpureDependenciesAsExecuted(module);
 		}
@@ -222,6 +226,7 @@ export default class Graph {
 	}
 
 	private sortModules(): void {
+		// aadonkeyz
 		const { orderedModules, cyclePaths } = analyseModuleExecution(this.entryModules);
 		for (const cyclePath of cyclePaths) {
 			this.options.onwarn({

@@ -100,6 +100,7 @@ async function getDefaultFromTranspiledConfigFile(
 			}
 		]
 	});
+	// aadonkeyz 使用 rollup 读取 rollup.config
 	return loadConfigFromBundledFile(fileName, code);
 }
 

@@ -135,6 +135,7 @@ export class PluginDriver {
 		replaceContext?: ReplaceContext | null,
 		skipped?: ReadonlySet<Plugin> | null
 	): EnsurePromise<ReturnType<PluginHooks[H]>> {
+		// aadonkeyz
 		let promise: EnsurePromise<ReturnType<PluginHooks[H]>> = Promise.resolve(undefined as any);
 		for (const plugin of this.plugins) {
 			if (skipped && skipped.has(plugin)) continue;
@@ -165,6 +166,7 @@ export class PluginDriver {
 		args: Parameters<PluginHooks[H]>,
 		replaceContext?: ReplaceContext
 	): Promise<void> {
+		// aadonkeyz
 		const promises: Promise<void>[] = [];
 		for (const plugin of this.plugins) {
 			const hookPromise = this.runHook(hookName, args, plugin, false, replaceContext);

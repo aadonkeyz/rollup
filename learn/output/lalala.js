@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
+const HELLO_WORLD = 'hello world';
 
-const a = 'hello world';
-
-exports.a = a;
+console.log(HELLO_WORLD);

@@ -17,6 +17,7 @@ export function analyseModuleExecution(entryModules: readonly Module[]): {
 	cyclePaths: string[][];
 	orderedModules: Module[];
 } {
+	// aadonkeyz
 	let nextExecIndex = 0;
 	const cyclePaths: string[][] = [];
 	const analysedModules = new Set<Module | ExternalModule>();

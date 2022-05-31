@@ -39,6 +39,7 @@ export async function rollupInternal(
 	);
 	initialiseTimers(inputOptions);
 
+	// aadonkeyz see inputOptions and unsetInputOptions
 	const graph = new Graph(inputOptions, watcher);
 
 	// remove the cache option from the memory after graph creation (cache is not used anymore)
@@ -50,6 +51,7 @@ export async function rollupInternal(
 
 	try {
 		await graph.pluginDriver.hookParallel('buildStart', [inputOptions]);
+		// aadonkeyz
 		await graph.build();
 	} catch (err: any) {
 		const watchFiles = Object.keys(graph.watchFiles);
