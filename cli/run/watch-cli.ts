@@ -91,7 +91,7 @@ export async function watch(command: Record<string, any>): Promise<void> {
 						if (!resetScreen) {
 							resetScreen = getResetScreen(configs, isTTY);
 						}
-						resetScreen(underline(`rollup v${rollup.VERSION}`));
+						resetScreen(underline(`rollup v${rollup.version}`));
 					}
 					break;
 
