@@ -94,13 +94,13 @@ export default class Graph {
 	}
 
 	async build(): Promise<void> {
-		// aadonkeyz
 		timeStart('generate module graph', 2);
 		await this.generateModuleGraph();
 		timeEnd('generate module graph', 2);
 
 		timeStart('sort modules', 2);
 		this.phase = BuildPhase.ANALYSE;
+		// aadonkeyz 先搞清楚 module 上的 importer 和 dependence 再往后看
 		this.sortModules();
 		timeEnd('sort modules', 2);
 
@@ -165,10 +165,9 @@ export default class Graph {
 	};
 
 	private async generateModuleGraph(): Promise<void> {
-		// aadonkeyz see this.options.input
+		// aadonkeyz 从 input 开始生成 moduleGraph
 		({ entryModules: this.entryModules, implicitEntryModules: this.implicitEntryModules } =
 			await this.moduleLoader.addEntryModules(normalizeEntryModules(this.options.input), true));
-		// aadonkeyz see this.entryModules and this.implicitEntryModules
 		if (this.entryModules.length === 0) {
 			throw new Error('You must supply options.input to rollup');
 		}

@@ -135,7 +135,6 @@ export class PluginDriver {
 		replaceContext?: ReplaceContext | null,
 		skipped?: ReadonlySet<Plugin> | null
 	): EnsurePromise<ReturnType<PluginHooks[H]>> {
-		// aadonkeyz
 		let promise: EnsurePromise<ReturnType<PluginHooks[H]>> = Promise.resolve(undefined as any);
 		for (const plugin of this.plugins) {
 			if (skipped && skipped.has(plugin)) continue;
@@ -166,7 +165,6 @@ export class PluginDriver {
 		args: Parameters<PluginHooks[H]>,
 		replaceContext?: ReplaceContext
 	): Promise<void> {
-		// aadonkeyz
 		const promises: Promise<void>[] = [];
 		for (const plugin of this.plugins) {
 			const hookPromise = this.runHook(hookName, args, plugin, false, replaceContext);
@@ -348,6 +346,7 @@ export class PluginDriver {
 				// doing so would subtly change the defacto async event dispatch order
 				// which at least one test and some plugins in the wild may depend on.
 				const promise = Promise.resolve(hookResult);
+				// aadonkeyz plugin hook 运行结果
 				return promise.then(() => {
 					// action was fulfilled
 					resolveAction(action as [string, string, Parameters<any>]);

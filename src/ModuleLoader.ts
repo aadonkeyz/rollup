@@ -104,7 +104,6 @@ export class ModuleLoader {
 		implicitEntryModules: Module[];
 		newEntryModules: Module[];
 	}> {
-		// aadonkeyz
 		const firstEntryModuleIndex = this.nextEntryModuleIndex;
 		this.nextEntryModuleIndex += unresolvedEntryModules.length;
 		const firstChunkNamePriority = this.nextChunkNamePriority;
@@ -147,6 +146,7 @@ export class ModuleLoader {
 			})
 		);
 		await this.awaitLoadModulesPromise();
+		// aadonkeyz entryModules 是所有 Modules，newEntryModules 是刚生成的
 		return {
 			entryModules: this.indexedEntryModules.map(({ module }) => module),
 			implicitEntryModules: [...this.implicitEntryModules],
@@ -297,7 +297,7 @@ export class ModuleLoader {
 			module.setSource(cachedModule);
 		} else {
 			module.updateOptions(sourceDescription);
-			// aadonkeyz source context scope
+			// aadonkeyz 暂时不 debug 这里。后续研究下 context scope 相关内容
 			module.setSource(
 				await transform(sourceDescription, module, this.pluginDriver, this.options.onwarn)
 			);
@@ -361,7 +361,6 @@ export class ModuleLoader {
 		isEntry: boolean,
 		isPreload: PreloadType
 	): Promise<Module> {
-		// aadonkeyz
 		const existingModule = this.modulesById.get(id);
 		if (existingModule instanceof Module) {
 			await this.handleExistingModule(existingModule, isEntry, isPreload);
@@ -620,7 +619,6 @@ export class ModuleLoader {
 		importer: string | undefined,
 		implicitlyLoadedBefore: string | null
 	): Promise<Module> {
-		// aadonkeyz
 		const resolveIdResult = await resolveId(
 			unresolvedId,
 			importer,
@@ -631,7 +629,6 @@ export class ModuleLoader {
 			EMPTY_OBJECT,
 			true
 		);
-		// aadonkeyz see resolveIdResult
 		if (resolveIdResult == null) {
 			return error(
 				implicitlyLoadedBefore === null
@@ -649,6 +646,7 @@ export class ModuleLoader {
 					: errImplicitDependantCannotBeExternal(unresolvedId, implicitlyLoadedBefore)
 			);
 		}
+		// aadonkeyz 根据 unresolvedId 得到对应的 Module 实例
 		return this.fetchModule(
 			this.getResolvedIdWithDefaults(
 				typeof resolveIdResult === 'object'
@@ -738,5 +736,6 @@ function isNotAbsoluteExternal(
 
 async function waitForDependencyResolution(loadPromise: LoadModulePromise) {
 	const [resolveStaticDependencyPromises, resolveDynamicImportPromises] = await loadPromise;
+	// aadonkeyz 看看 resolveStatisDependencyPromises 是什么鬼东西
 	return Promise.all([...resolveStaticDependencyPromises, ...resolveDynamicImportPromises]);
 }
