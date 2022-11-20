@@ -100,7 +100,6 @@ export default class Graph {
 
 		timeStart('sort modules', 2);
 		this.phase = BuildPhase.ANALYSE;
-		// aadonkeyz 先搞清楚 module 上的 importer 和 dependence 再往后看
 		this.sortModules();
 		timeEnd('sort modules', 2);
 
@@ -165,7 +164,6 @@ export default class Graph {
 	};
 
 	private async generateModuleGraph(): Promise<void> {
-		// aadonkeyz 从 input 开始生成 moduleGraph
 		({ entryModules: this.entryModules, implicitEntryModules: this.implicitEntryModules } =
 			await this.moduleLoader.addEntryModules(normalizeEntryModules(this.options.input), true));
 		if (this.entryModules.length === 0) {
@@ -181,7 +179,6 @@ export default class Graph {
 	}
 
 	private includeStatements(): void {
-		// aadonkeyz
 		for (const module of [...this.entryModules, ...this.implicitEntryModules]) {
 			markModuleAndImpureDependenciesAsExecuted(module);
 		}
@@ -225,7 +222,6 @@ export default class Graph {
 	}
 
 	private sortModules(): void {
-		// aadonkeyz
 		const { orderedModules, cyclePaths } = analyseModuleExecution(this.entryModules);
 		for (const cyclePath of cyclePaths) {
 			this.options.onwarn({

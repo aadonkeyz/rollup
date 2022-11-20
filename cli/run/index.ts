@@ -64,7 +64,6 @@ export default async function runRollup(
 	} else {
 		try {
 			const { options, warnings } = await getConfigs(command, fileName);
-			// aadonkeyz 根据读取到的 rollup.config[number].options 进行打包
 			try {
 				for (const inputOptions of options) {
 					await build(inputOptions, warnings, command.silent);

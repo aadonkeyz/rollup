@@ -346,7 +346,6 @@ export class PluginDriver {
 				// doing so would subtly change the defacto async event dispatch order
 				// which at least one test and some plugins in the wild may depend on.
 				const promise = Promise.resolve(hookResult);
-				// aadonkeyz plugin hook 运行结果
 				return promise.then(() => {
 					// action was fulfilled
 					resolveAction(action as [string, string, Parameters<any>]);
